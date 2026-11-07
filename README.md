@@ -4,7 +4,7 @@
 
 It enables users to manage employee tasks, monitor progress, generate executive briefings, and schedule meetings using natural-language and voice interactions.
 
-Built for the **WeMakeDevs SWITCH Hackathon**, CHIEF combines AI agents, the Model Context Protocol (MCP), and Google Calendar integration to streamline everyday business operations.
+Built for the **WeMakeDevs FLIP THE SWITCH Hackathon**, CHIEF combines AI agents, the Model Context Protocol (MCP), and Google Calendar integration to streamline everyday business operations.
 
 ## 🚀 Features
 
