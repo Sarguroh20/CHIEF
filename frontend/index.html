@@ -1,0 +1,1419 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CHIEF | Executive Assistant</title>
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f3f5f9;
+        color: #172033;
+      }
+
+      header {
+        background: #111c35;
+        color: white;
+        padding: 22px 6%;
+      }
+
+      header h1 {
+        margin: 0;
+        letter-spacing: 2px;
+      }
+
+      header p {
+        margin-bottom: 0;
+        color: #b9c4d9;
+      }
+
+      main {
+        max-width: 1150px;
+        margin: 35px auto;
+        padding: 0 20px;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+        margin-bottom: 25px;
+      }
+
+      .card,
+      .panel {
+        background: white;
+        padding: 22px;
+        border-radius: 12px;
+        box-shadow: 0 3px 14px #1720330d;
+      }
+
+      .card h2 {
+        font-size: 30px;
+        margin: 8px 0 0;
+      }
+
+      .panel {
+        margin-bottom: 22px;
+      }
+
+      input,
+      select,
+      button {
+        padding: 12px;
+        border: 1px solid #d8deea;
+        border-radius: 7px;
+        font-size: 14px;
+      }
+
+      form {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr) auto;
+        gap: 10px;
+      }
+
+      input {
+        min-width: 0;
+      }
+
+      button {
+        cursor: pointer;
+        border: 0;
+        background: #315ee7;
+        color: white;
+        font-weight: 600;
+      }
+
+      button:hover {
+        opacity: 0.9;
+      }
+
+      button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      .voice {
+        background: #172d55;
+        margin-top: 12px;
+      }
+
+      .toolbar {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 15px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 14px 10px;
+        border-bottom: 1px solid #edf0f5;
+        text-align: left;
+      }
+
+      th {
+        color: #64718a;
+        font-size: 13px;
+      }
+
+      td select {
+        padding: 8px;
+      }
+
+      .error {
+        color: #c62828;
+      }
+
+      #message {
+        margin-top: 12px;
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+      }
+
+      .assistant-info {
+        color: #64718a;
+        font-size: 13px;
+        margin-top: 10px;
+      }
+
+      .overdue-badge {
+        display: inline-block;
+        background: #fde8e8;
+        color: #c62828;
+        padding: 5px 8px;
+        border-radius: 5px;
+        font-size: 11px;
+        font-weight: bold;
+      }
+
+      .header-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .notification-button {
+        background: #315ee7;
+        white-space: nowrap;
+      }
+
+      .notification-count {
+        display: inline-block;
+        background: #e53935;
+        color: white;
+        border-radius: 50%;
+        min-width: 21px;
+        padding: 3px 6px;
+        margin-left: 5px;
+        font-size: 12px;
+        text-align: center;
+      }
+
+      .notification-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        padding: 15px 0;
+        border-bottom: 1px solid #edf0f5;
+      }
+
+      .notification-item:last-child {
+        border-bottom: none;
+      }
+
+      .notification-details {
+        min-width: 0;
+      }
+
+      .notification-details p {
+        margin: 5px 0;
+        color: #64718a;
+        font-size: 14px;
+        overflow-wrap: anywhere;
+      }
+
+      .notification-type {
+        font-size: 12px;
+        font-weight: bold;
+        color: #c62828;
+        text-transform: uppercase;
+      }
+
+      .mark-read {
+        background: #172d55;
+        white-space: nowrap;
+        padding: 9px 12px;
+      }
+
+      .empty-notifications {
+        color: #64718a;
+        padding: 15px 0;
+      }
+
+      /* Notification filters */
+      .notification-filters {
+        display: flex;
+        gap: 8px;
+      }
+
+      .notification-filters button {
+        background: #e9edf5;
+        color: #172033;
+      }
+
+      .notification-filters button.active {
+        background: #315ee7;
+        color: white;
+      }
+
+      /* Main application layout */
+      .app-layout {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        width: 245px;
+        min-width: 245px;
+        background: #111c35;
+        color: white;
+        padding: 28px 16px;
+      }
+
+      .sidebar h2 {
+        margin: 0 0 8px;
+        letter-spacing: 2px;
+        padding: 0 12px;
+      }
+
+      .sidebar .sidebar-subtitle {
+        color: #9eacc5;
+        font-size: 12px;
+        padding: 0 12px;
+        margin-bottom: 35px;
+      }
+
+      .sidebar nav {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .nav-button {
+        background: transparent;
+        color: #c3cee0;
+        text-align: left;
+        padding: 14px;
+        border-radius: 8px;
+        font-size: 15px;
+      }
+
+      .nav-button:hover,
+      .nav-button.active {
+        background: #263b5d;
+        color: white;
+        opacity: 1;
+      }
+
+      .main-area {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .page-title {
+        margin-top: 0;
+        margin-bottom: 22px;
+      }
+
+      .page[hidden] {
+        display: none !important;
+      }
+
+      @media (max-width: 700px) {
+        .stats {
+          grid-template-columns: 1fr;
+        }
+
+        form {
+          grid-template-columns: 1fr;
+        }
+
+        .table-wrap {
+          overflow-x: auto;
+        }
+
+        .app-layout {
+          flex-direction: column;
+        }
+
+        .sidebar {
+          width: 100%;
+          min-width: 0;
+          padding: 18px;
+        }
+
+        .sidebar .sidebar-subtitle {
+          margin-bottom: 15px;
+        }
+
+        .sidebar nav {
+          flex-direction: row;
+          overflow-x: auto;
+        }
+
+        .nav-button {
+          white-space: nowrap;
+        }
+
+        main {
+          margin-top: 20px;
+        }
+      }
+
+      @media (max-width: 500px) {
+        .notification-item {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .header-top {
+          align-items: flex-start;
+        }
+      }
+      .notification-filters {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .notification-filters button,
+      #refreshNotifications {
+        height: 40px;
+        min-width: 85px;
+        padding: 0 16px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+        box-sizing: border-box;
+      }
+      .notification-filters button.active {
+        background: #315ee7;
+        color: white;
+      }
+
+      #refreshNotifications {
+        height: 40px;
+        min-width: 85px;
+        padding: 0 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+      }
+
+      /* Meetings */
+      .meeting-status {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 18px;
+        color: #64718a;
+        font-size: 14px;
+      }
+
+      .status-dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: #16a34a;
+      }
+
+      .meeting-item {
+        padding: 18px 0;
+        border-bottom: 1px solid #edf0f5;
+      }
+
+      .meeting-item:last-child {
+        border-bottom: none;
+      }
+
+      .meeting-item h4 {
+        margin: 0 0 8px;
+        font-size: 17px;
+      }
+
+      .meeting-item p {
+        margin: 6px 0;
+        color: #64718a;
+        font-size: 14px;
+        overflow-wrap: anywhere;
+      }
+
+      .meeting-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .meeting-actions button {
+        height: 40px;
+        padding: 0 16px;
+      }
+
+      .secondary-button {
+        background: #172d55;
+      }
+
+      .meeting-empty {
+        color: #64718a;
+        padding: 20px 0;
+      }
+
+      .meeting-error {
+        color: #c62828;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="app-layout">
+      <!-- Sidebar navigation -->
+      <aside class="sidebar">
+        <h2>CHIEF</h2>
+        <p class="sidebar-subtitle">EXECUTIVE WORKSPACE</p>
+
+        <nav>
+          <button class="nav-button active" data-page="dashboardPage">
+            🏠 Dashboard
+          </button>
+
+          <button class="nav-button" data-page="tasksPage">📋 Tasks</button>
+
+          <button class="nav-button" data-page="notificationsPage">
+            🔔 Notifications
+          </button>
+
+          <button class="nav-button" data-page="meetingsPage">
+            📅 Meetings
+          </button>
+        </nav>
+      </aside>
+
+      <!-- Main application area -->
+      <div class="main-area">
+        <header>
+          <div class="header-top">
+            <div>
+              <h1>CHIEF</h1>
+              <p>Voice-Based Executive Assistant</p>
+            </div>
+
+            <button class="notification-button" id="notificationButton">
+              🔔 Notifications
+              <span class="notification-count" id="notificationCount">0</span>
+            </button>
+          </div>
+        </header>
+
+        <main>
+          <!-- Dashboard page -->
+          <section class="page" id="dashboardPage">
+            <h2 class="page-title">Executive Dashboard</h2>
+
+            <section class="stats">
+              <div class="card">
+                Total Tasks
+                <h2 id="total">0</h2>
+              </div>
+
+              <div class="card">
+                In Progress
+                <h2 id="progress">0</h2>
+              </div>
+
+              <div class="card">
+                Completed
+                <h2 id="completed">0</h2>
+              </div>
+
+              <div class="card">
+                Overdue Tasks
+                <h2 id="overdue">0</h2>
+              </div>
+            </section>
+
+            <section class="panel">
+              <h3>Welcome to CHIEF</h3>
+              <p>
+                Your executive assistant for managing tasks, monitoring
+                deadlines and coordinating meetings.
+              </p>
+              <p>Use the sidebar to navigate your workspace.</p>
+            </section>
+          </section>
+
+          <!-- Tasks page -->
+          <section class="page" id="tasksPage" hidden>
+            <h2 class="page-title">Task Management</h2>
+
+            <section class="panel">
+              <h3>Create a Task</h3>
+
+              <form id="taskForm">
+                <input id="employee" placeholder="Employee name" required />
+                <input id="task" placeholder="Task description" required />
+                <input id="deadline" type="datetime-local" required />
+                <button type="submit">Create Task</button>
+              </form>
+
+              <button class="voice" id="voiceButton">
+                🎙 Start Voice Command
+              </button>
+
+              <p id="message" aria-live="polite"></p>
+
+              <p class="assistant-info">Powered by CHIEF AI</p>
+            </section>
+
+            <section class="panel">
+              <div class="toolbar">
+                <h3>All Tasks</h3>
+
+                <select id="filter">
+                  <option value="">All Tasks</option>
+                  <option value="Created">Created</option>
+                  <option value="In Progress">In Progress</option>
+                  <option value="Completed">Completed</option>
+                </select>
+              </div>
+
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Employee</th>
+                      <th>Task</th>
+                      <th>Deadline</th>
+                      <th>Status</th>
+                      <th>Update</th>
+                    </tr>
+                  </thead>
+                  <tbody id="taskList"></tbody>
+                </table>
+              </div>
+            </section>
+          </section>
+
+          <!-- Notifications page -->
+          <section class="page" id="notificationsPage" hidden>
+            <section class="panel" id="notificationPanel">
+              <div class="toolbar">
+                <h2>Notifications</h2>
+
+                <div class="notification-filters">
+                  <button type="button" id="showUnread" class="active">
+                    Unread
+                  </button>
+                  <button type="button" id="showAll">All</button>
+                  <button type="button" id="refreshNotifications">
+                    Refresh
+                  </button>
+                </div>
+              </div>
+
+              <div id="notificationList">
+                <p class="empty-notifications">Loading notifications...</p>
+              </div>
+            </section>
+          </section>
+
+          <!-- Meetings page -->
+          <!-- Meetings page -->
+          <section class="page" id="meetingsPage" hidden>
+            <h2 class="page-title">Meetings</h2>
+
+            <section class="panel">
+              <div class="toolbar">
+                <div>
+                  <h3>Google Calendar</h3>
+
+                  <div class="meeting-status">
+                    <span class="status-dot" id="meetingStatusDot"></span>
+                    <span id="meetingStatus">Checking connection...</span>
+                  </div>
+                </div>
+
+                <div class="meeting-actions">
+                  <button type="button" id="connectCalendar" hidden>
+                    Connect Google Calendar
+                  </button>
+
+                  <button
+                    type="button"
+                    class="secondary-button"
+                    id="refreshMeetings"
+                  >
+                    Refresh
+                  </button>
+                </div>
+              </div>
+
+              <div id="meetingList">
+                <p class="meeting-empty">Loading meetings...</p>
+              </div>
+            </section>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <script>
+      const API = "/api/tasks";
+      const ASSISTANT_API = "/api/assistant";
+
+      const elements = {
+        total: document.getElementById("total"),
+        progress: document.getElementById("progress"),
+        completed: document.getElementById("completed"),
+        taskList: document.getElementById("taskList"),
+        message: document.getElementById("message"),
+        filter: document.getElementById("filter"),
+        voiceButton: document.getElementById("voiceButton"),
+        taskForm: document.getElementById("taskForm"),
+        employee: document.getElementById("employee"),
+        task: document.getElementById("task"),
+        deadline: document.getElementById("deadline"),
+        notificationButton: document.getElementById("notificationButton"),
+        notificationCount: document.getElementById("notificationCount"),
+        notificationPanel: document.getElementById("notificationPanel"),
+        notificationList: document.getElementById("notificationList"),
+        refreshNotifications: document.getElementById("refreshNotifications"),
+        overdue: document.getElementById("overdue"),
+      };
+
+      // Sidebar page navigation
+      function showPage(pageId) {
+        document.querySelectorAll(".page").forEach((page) => {
+          page.hidden = page.id !== pageId;
+        });
+
+        document.querySelectorAll(".nav-button").forEach((button) => {
+          button.classList.toggle("active", button.dataset.page === pageId);
+        });
+
+        if (pageId === "notificationsPage") {
+          loadNotifications();
+        }
+
+        if (pageId === "tasksPage") {
+          loadTasks();
+        }
+
+        if (pageId === "meetingsPage") {
+          loadMeetings();
+        }
+      }
+
+      document.querySelectorAll(".nav-button").forEach((button) => {
+        button.addEventListener("click", () => {
+          showPage(button.dataset.page);
+        });
+      });
+
+      // Display messages
+      function showMessage(message, isError = false) {
+        elements.message.textContent = message;
+        elements.message.className = isError ? "error" : "";
+      }
+
+      // Notification filter state
+      let notificationFilter = "unread";
+
+      // Load notifications from CHIEF backend
+      async function loadNotifications() {
+        try {
+          const response = await fetch("/api/notifications");
+
+          if (!response.ok) {
+            throw new Error("Could not load notifications.");
+          }
+
+          const notifications = await response.json();
+
+          // Count unread notifications
+          const unreadCount = notifications.filter(
+            (notification) => notification.is_read === 0,
+          ).length;
+
+          elements.notificationCount.textContent = unreadCount;
+
+          // Apply selected filter
+          const filteredNotifications =
+            notificationFilter === "unread"
+              ? notifications.filter(
+                  (notification) => notification.is_read === 0,
+                )
+              : notifications;
+
+          renderNotifications(filteredNotifications);
+        } catch (error) {
+          elements.notificationList.textContent = error.message;
+        }
+      }
+
+      // Unread filter button
+      document.getElementById("showUnread").addEventListener("click", () => {
+        notificationFilter = "unread";
+
+        document.getElementById("showUnread").classList.add("active");
+        document.getElementById("showAll").classList.remove("active");
+
+        loadNotifications();
+      });
+
+      // All notifications filter button
+      document.getElementById("showAll").addEventListener("click", () => {
+        notificationFilter = "all";
+
+        document.getElementById("showAll").classList.add("active");
+        document.getElementById("showUnread").classList.remove("active");
+
+        loadNotifications();
+      });
+
+      document
+        .getElementById("refreshNotifications")
+        .addEventListener("click", loadNotifications);
+
+      // Display notifications
+      function renderNotifications(notifications) {
+        elements.notificationList.replaceChildren();
+
+        if (!notifications.length) {
+          const message = document.createElement("p");
+          message.className = "empty-notifications";
+          message.textContent = "No notifications yet.";
+
+          elements.notificationList.appendChild(message);
+          return;
+        }
+
+        notifications.forEach((notification) => {
+          const item = document.createElement("div");
+          item.className = "notification-item";
+
+          const details = document.createElement("div");
+          details.className = "notification-details";
+
+          const type = document.createElement("span");
+          type.className = "notification-type";
+          type.textContent = notification.notification_type.replace("_", " ");
+
+          const task = document.createElement("p");
+          task.textContent = `${notification.employee}: ${notification.task}`;
+
+          const deadline = document.createElement("p");
+          deadline.textContent = `Deadline: ${notification.deadline}`;
+
+          details.append(type, task, deadline);
+
+          // Show unread/read state
+          if (notification.is_read === 0) {
+            const button = document.createElement("button");
+            button.className = "mark-read";
+            button.textContent = "Mark as read";
+
+            button.addEventListener("click", () => {
+              markNotificationRead(notification.notification_id);
+            });
+
+            item.append(details, button);
+          } else {
+            const readLabel = document.createElement("span");
+            readLabel.textContent = "Read";
+            readLabel.style.color = "#64718a";
+
+            item.append(details, readLabel);
+          }
+
+          elements.notificationList.appendChild(item);
+        });
+      }
+
+      // Format meeting date and time
+      function formatMeetingDate(dateValue) {
+        if (!dateValue) {
+          return "Time not specified";
+        }
+
+        const date = new Date(dateValue);
+
+        if (Number.isNaN(date.getTime())) {
+          return dateValue;
+        }
+
+        return date.toLocaleString("en-IN", {
+          weekday: "short",
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true,
+        });
+      }
+
+      // Load meetings from Google Calendar
+      async function loadMeetings() {
+        const meetingList = document.getElementById("meetingList");
+        const meetingStatus = document.getElementById("meetingStatus");
+        const meetingStatusDot = document.getElementById("meetingStatusDot");
+        const connectButton = document.getElementById("connectCalendar");
+        const refreshButton = document.getElementById("refreshMeetings");
+
+        meetingList.textContent = "Loading meetings...";
+        meetingStatus.textContent = "Checking connection...";
+        connectButton.hidden = true;
+
+        refreshButton.disabled = true;
+
+        try {
+          const response = await fetch("/api/meetings");
+
+          const data = await response.json();
+
+          if (!response.ok) {
+            if (response.status === 401) {
+              throw new Error("Google Calendar is not connected.");
+            }
+
+            throw new Error(data.message || "Could not load meetings.");
+          }
+
+          if (!data.connected) {
+            meetingStatus.textContent = "Not connected";
+            meetingStatusDot.style.background = "#c62828";
+            connectButton.hidden = false;
+
+            meetingList.textContent =
+              "Connect your Google Calendar to view your meetings.";
+
+            return;
+          }
+
+          meetingStatus.textContent = "Google Calendar connected";
+          meetingStatusDot.style.background = "#16a34a";
+
+          const meetings = data.meetings || [];
+
+          renderMeetings(meetings);
+        } catch (error) {
+          meetingStatus.textContent = "Connection unavailable";
+          meetingStatusDot.style.background = "#c62828";
+
+          meetingList.replaceChildren();
+
+          const message = document.createElement("p");
+          message.className = "meeting-error";
+          message.textContent = error.message;
+
+          meetingList.appendChild(message);
+
+          connectButton.hidden = false;
+        } finally {
+          refreshButton.disabled = false;
+        }
+      }
+
+      // Render Google Calendar meetings
+      function renderMeetings(meetings) {
+        const meetingList = document.getElementById("meetingList");
+
+        meetingList.replaceChildren();
+
+        if (!meetings.length) {
+          const emptyMessage = document.createElement("p");
+
+          emptyMessage.className = "meeting-empty";
+          emptyMessage.textContent = "No upcoming meetings found.";
+
+          meetingList.appendChild(emptyMessage);
+          return;
+        }
+
+        meetings.forEach((meeting) => {
+          const item = document.createElement("div");
+          item.className = "meeting-item";
+
+          const title = document.createElement("h4");
+          title.textContent = meeting.title || "Untitled Meeting";
+
+          const start = document.createElement("p");
+          start.textContent = "Start: " + formatMeetingDate(meeting.start);
+
+          const end = document.createElement("p");
+          end.textContent = "End: " + formatMeetingDate(meeting.end);
+
+          item.append(title, start, end);
+
+          if (meeting.description) {
+            const description = document.createElement("p");
+            description.textContent = "Description: " + meeting.description;
+
+            item.appendChild(description);
+          }
+
+          if (meeting.location) {
+            const location = document.createElement("p");
+            location.textContent = "Location: " + meeting.location;
+
+            item.appendChild(location);
+          }
+
+          if (meeting.htmlLink) {
+            const link = document.createElement("a");
+
+            link.href = meeting.htmlLink;
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+            link.textContent = "Open in Google Calendar";
+
+            item.appendChild(link);
+          }
+
+          meetingList.appendChild(item);
+        });
+      }
+
+      // Refresh meetings
+      document
+        .getElementById("refreshMeetings")
+        .addEventListener("click", loadMeetings);
+
+      // Connect Google Calendar
+      document
+        .getElementById("connectCalendar")
+        .addEventListener("click", () => {
+          window.location.href = "/auth/google";
+        });
+
+      // Mark a notification as read
+      async function markNotificationRead(notificationId) {
+        try {
+          const response = await fetch(
+            "/api/notifications/" + encodeURIComponent(notificationId),
+            {
+              method: "PATCH",
+            },
+          );
+
+          const result = await response.json();
+
+          if (!response.ok) {
+            throw new Error(result.error || "Could not update notification.");
+          }
+
+          await loadNotifications();
+        } catch (error) {
+          showMessage(error.message, true);
+        }
+      }
+
+      // Check whether a task is overdue
+      function isTaskOverdue(task) {
+        if (task.status === "Completed") {
+          return false;
+        }
+
+        const deadline = new Date(task.deadline);
+
+        return (
+          !Number.isNaN(deadline.getTime()) && deadline.getTime() < Date.now()
+        );
+      }
+
+      // Text-to-speech
+      function speak(message) {
+        if (!("speechSynthesis" in window)) {
+          return;
+        }
+
+        window.speechSynthesis.cancel();
+
+        const utterance = new SpeechSynthesisUtterance(message);
+        utterance.lang = "en-US";
+
+        window.speechSynthesis.speak(utterance);
+      }
+
+      // Update dashboard statistics
+      async function updateStatistics() {
+        const response = await fetch(API);
+
+        if (!response.ok) {
+          throw new Error("Could not update statistics");
+        }
+
+        const tasks = await response.json();
+
+        elements.total.textContent = tasks.length;
+
+        elements.progress.textContent = tasks.filter(
+          (task) => task.status === "In Progress",
+        ).length;
+
+        elements.completed.textContent = tasks.filter(
+          (task) => task.status === "Completed",
+        ).length;
+
+        elements.overdue.textContent = tasks.filter(isTaskOverdue).length;
+      }
+
+      // Load tasks
+      async function loadTasks() {
+        try {
+          const status = elements.filter.value;
+
+          const url =
+            API + (status ? "?status=" + encodeURIComponent(status) : "");
+
+          const response = await fetch(url);
+
+          if (!response.ok) {
+            throw new Error("Could not load tasks");
+          }
+
+          const tasks = await response.json();
+
+          renderTasks(tasks);
+
+          await updateStatistics();
+        } catch (error) {
+          showMessage(error.message, true);
+        }
+      }
+
+      // Render task table
+      function renderTasks(tasks) {
+        elements.taskList.replaceChildren();
+
+        if (!tasks.length) {
+          const row = document.createElement("tr");
+          const cell = document.createElement("td");
+
+          cell.colSpan = 5;
+          cell.textContent = "No tasks found.";
+
+          row.appendChild(cell);
+          elements.taskList.appendChild(row);
+
+          return;
+        }
+
+        tasks.forEach((task) => {
+          const row = document.createElement("tr");
+
+          // Employee, task, deadline and status
+          [task.employee, task.task, task.deadline, task.status].forEach(
+            (value, index) => {
+              const cell = document.createElement("td");
+
+              cell.textContent = value ?? "";
+
+              // Show overdue badge beside task status
+              if (index === 3 && isTaskOverdue(task)) {
+                const badge = document.createElement("span");
+
+                badge.textContent = "OVERDUE";
+                badge.className = "overdue-badge";
+
+                cell.appendChild(document.createTextNode(" "));
+                cell.appendChild(badge);
+              }
+
+              row.appendChild(cell);
+            },
+          );
+
+          // Status update dropdown
+          const actionCell = document.createElement("td");
+          const select = document.createElement("select");
+
+          ["Created", "In Progress", "Completed"].forEach((status) => {
+            const option = document.createElement("option");
+
+            option.value = status;
+            option.textContent = status;
+            option.selected = status === task.status;
+
+            select.appendChild(option);
+          });
+
+          select.addEventListener("change", async () => {
+            try {
+              const response = await fetch(
+                API + "/" + encodeURIComponent(task.task_id),
+                {
+                  method: "PATCH",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    status: select.value,
+                  }),
+                },
+              );
+
+              const result = await response.json();
+
+              if (!response.ok) {
+                throw new Error(result.error || "Update failed");
+              }
+
+              showMessage("Task status updated successfully.");
+
+              await loadTasks();
+            } catch (error) {
+              showMessage(error.message, true);
+              await loadTasks();
+            }
+          });
+
+          actionCell.appendChild(select);
+          row.appendChild(actionCell);
+
+          elements.taskList.appendChild(row);
+        });
+      }
+
+      // Notification button navigation
+      elements.notificationButton.addEventListener("click", () => {
+        showPage("notificationsPage");
+      });
+
+      // Manually refresh notifications
+      elements.refreshNotifications.addEventListener(
+        "click",
+        loadNotifications,
+      );
+
+      // Manual task creation
+      elements.taskForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const data = {
+          employee: elements.employee.value.trim(),
+          task: elements.task.value.trim(),
+          deadline: elements.deadline.value.trim(),
+        };
+
+        try {
+          const response = await fetch(API, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          });
+
+          const result = await response.json();
+
+          if (!response.ok) {
+            throw new Error(result.error || "Task creation failed");
+          }
+
+          event.target.reset();
+
+          elements.filter.value = "";
+
+          showMessage("Task created successfully.");
+
+          await loadTasks();
+        } catch (error) {
+          showMessage(error.message, true);
+        }
+      });
+
+      // Manual task filtering
+      elements.filter.addEventListener("change", loadTasks);
+
+      // Send natural-language instruction to CHIEF AI
+      async function processAssistantCommand(instruction) {
+        try {
+          showMessage("CHIEF AI is processing your instruction...");
+
+          const response = await fetch(ASSISTANT_API, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              instruction: instruction,
+            }),
+          });
+
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data.message || "Assistant request failed.");
+          }
+
+          // Ask the user for missing information
+          if (data.needs_clarification) {
+            showMessage(data.message || "I need more information.");
+
+            speak(data.message || "I need more information.");
+
+            return;
+          }
+
+          if (!data.success) {
+            throw new Error(
+              data.message || "CHIEF could not complete that operation.",
+            );
+          }
+
+          // Handle AI action
+          switch (data.action) {
+            case "create_task": {
+              const createdTask = data.result?.result;
+
+              elements.filter.value = "";
+
+              await loadTasks();
+
+              const message = createdTask?.employee
+                ? `Task created successfully for ${createdTask.employee}.`
+                : "Task created successfully.";
+
+              showMessage(message);
+              speak(message);
+
+              elements.taskForm.reset();
+
+              break;
+            }
+
+            case "list_tasks": {
+              elements.filter.value = "";
+
+              await loadTasks();
+
+              showMessage("Here are all your tasks.");
+              speak("Here are all your tasks.");
+
+              break;
+            }
+
+            case "filter_tasks": {
+              const status = data.status;
+
+              if (!status) {
+                showMessage("Task status was not provided.", true);
+                break;
+              }
+
+              elements.filter.value = status;
+
+              await loadTasks();
+
+              const message = `Showing ${status.toLowerCase()} tasks.`;
+
+              showMessage(message);
+              speak(message);
+
+              break;
+            }
+
+            case "update_task": {
+              await loadTasks();
+
+              showMessage("Task status updated successfully.");
+              speak("Task status updated successfully.");
+
+              break;
+            }
+
+            case "get_overdue_tasks":
+            case "get_tasks_due_today":
+            case "get_employee_tasks": {
+              const tasks = data.result;
+
+              if (!Array.isArray(tasks)) {
+                throw new Error("Invalid task data received from CHIEF.");
+              }
+
+              // Display the intelligence results directly
+              elements.filter.value = "";
+              renderTasks(tasks);
+
+              let message;
+
+              if (data.action === "get_overdue_tasks") {
+                message = `${tasks.length} overdue tasks found.`;
+              } else if (data.action === "get_tasks_due_today") {
+                message = `${tasks.length} tasks due today.`;
+              } else {
+                const employee = tasks[0]?.employee || "the employee";
+
+                message = `${tasks.length} tasks found for ${employee}.`;
+              }
+
+              showMessage(message);
+              speak(message);
+
+              break;
+            }
+
+            default: {
+              await loadTasks();
+
+              showMessage("CHIEF completed the request.");
+              speak("CHIEF completed the request.");
+            }
+          }
+        } catch (error) {
+          showMessage(error.message, true);
+          speak("Sorry, I could not complete that request.");
+        }
+      }
+
+      // Browser voice recognition
+      const SpeechRecognition =
+        window.SpeechRecognition || window.webkitSpeechRecognition;
+
+      elements.voiceButton.addEventListener("click", () => {
+        if (!SpeechRecognition) {
+          showMessage(
+            "Speech recognition is not supported in this browser.",
+            true,
+          );
+
+          return;
+        }
+
+        const recognition = new SpeechRecognition();
+
+        recognition.lang = "en-US";
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+
+        elements.voiceButton.disabled = true;
+
+        recognition.onstart = () => {
+          showMessage("CHIEF is listening...");
+        };
+
+        recognition.onerror = (event) => {
+          showMessage("Voice recognition error: " + event.error, true);
+        };
+
+        recognition.onresult = async (event) => {
+          const command = event.results[0][0].transcript.trim();
+
+          showMessage("You said: " + command);
+
+          // Send the complete spoken instruction to Ollama
+          await processAssistantCommand(command);
+        };
+
+        recognition.onend = () => {
+          elements.voiceButton.disabled = false;
+        };
+
+        try {
+          recognition.start();
+        } catch (error) {
+          elements.voiceButton.disabled = false;
+          showMessage(error.message, true);
+        }
+      });
+
+      // Initial dashboard load
+      loadTasks();
+      loadNotifications();
+
+      // Refresh notifications every 60 seconds
+      setInterval(loadNotifications, 60000);
+    </script>
+  </body>
+</html>

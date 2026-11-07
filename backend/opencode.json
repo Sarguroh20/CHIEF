@@ -1,0 +1,38 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "ollama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Ollama",
+      "options": {
+        "baseURL": "http://localhost:11434/v1"
+      },
+      "models": {
+        "qwen2.5:1.5b": {
+          "name": "Qwen 2.5 1.5B"
+        }
+      }
+    }
+  },
+  "model": "ollama/qwen2.5:1.5b",
+  "mcp": {
+    "chief-tasks": {
+      "type": "local",
+      "command": [
+        "C:\\Users\\sargu\\Projects\\CHIEF\\.venv\\Scripts\\python.exe",
+        "C:\\Users\\sargu\\Projects\\CHIEF\\backend\\mcp_server.py"
+      ],
+      "cwd": "C:\\Users\\sargu\\Projects\\CHIEF\\backend",
+      "enabled": true,
+      "timeout": 60000
+    }
+  },
+  "agent": {
+    "build": {
+      "tools": {
+        "task": false,
+        "chief-tasks_*": true
+      }
+    }
+  }
+}
