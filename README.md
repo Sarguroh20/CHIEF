@@ -41,8 +41,6 @@ CHIEF follows a modular architecture in which specialized agents handle differen
 
 ## 🔗 SWITCH Integration
 
-CHIEF was developed for the **WeMakeDevs SWITCH Hackathon**.
-
 The project uses a Model Context Protocol (MCP) server connected to Codex, allowing an AI assistant to access CHIEF's capabilities through specialized tools.
 
 ### MCP Tools
@@ -231,7 +229,7 @@ The local database and private OAuth files are excluded from version control.
 
 ## 🎯 Hackathon Information
 
-**Event:** WeMakeDevs SWITCH Hackathon
+**Event:** WeMakeDevs FLIP THE SWITCH Hackathon
 
 **Project Name:** CHIEF – Voice-Based Executive Assistant
 
